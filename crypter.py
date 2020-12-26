@@ -7,19 +7,19 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.fernet import Fernet
 
-files = []
-
-def get_dir():
+def get_dir(): # ファイルを取得
     path = './'
-    global files
+    files = []
+    
     for filename in os.listdir(path):
-        if os.path.isfile(os.path.join(path, filename)): #ファイルのみ取得
+        if os.path.isfile(os.path.join(path, filename)): # ファイルのみ取得
             files.append(filename)
     print ('ファイル一覧 >> ')
     
-    for num in range(len(files)):
-        print (str(num) + '. ' + files[num])        
-    return 0
+    for i in files:
+        print (str(i) + '. ' + files[i])
+        
+    return(files)
 
 def file_number(num):
     global files
@@ -27,8 +27,7 @@ def file_number(num):
     
 def generate_key():
     """鍵の生成"""
-    #print ('Type a Password')
-    print ('ファイルのパスワードを入力してください.')
+    print ('Type a Password.')
     password_provided = input('>> ')
     password = password_provided.encode()
 
@@ -90,7 +89,7 @@ class crypto():
         else:
             print ('ファイルは暗号化されていません. ')
 
-def selecter(num, key, input_file):
+def select_crypto(num, key, input_file):
     c = crypto()
     if num == 1:
         c.encrypto(key, input_file) 
@@ -102,15 +101,10 @@ def selecter(num, key, input_file):
 
 def main():
     get_dir()
-    #num = input('select the file number >> ')
-    num = input('ファイル番号を入力してください >> ')
-    num = int(num)
-    input_file = file_number(num)
-    
+    num = input('select the file number >> ')
+    input_file = file_number(int(num))
     key = generate_key()
-    #num2 = input('select 1:encrypto or 2:decrypto >> ')
-    num2 = input('1:暗号化 か 2:復号化を選んでください >> ')
-    num2 = int(num2)
-    selecter(num2, key, input_file)
+    selecter = input('select 1:encrypto or 2:decrypto >> ')
+    select_crypto(int(selecter), key, input_file)
     
 main()    
